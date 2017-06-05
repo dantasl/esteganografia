@@ -11,3 +11,6 @@
 
 //utilizada para descobrir o tamanho (em bytes) de imagens ou arquivos .txt
 int tamanho_arquivo( FILE *arquivo );
+
+//atualmente lê, armazena os dados certos em structs e copia a imagem
+void ler_imagem_ppm( FILE *imagem );

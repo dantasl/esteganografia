@@ -1,15 +1,7 @@
-#include "steg-header.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 int main(int argc, char const *argv[]) {
-
-  //verificando se os argumentos passados pelo usuário são válidos
-  if (strcmp(argv[1], "-e") == 0){
-    printf("encode \n");
-  } else if(strcmp(argv[1], "-d") == 0){
-    printf("decode \n");
-  } else {
-    printf("error\n");
-  }
-  /*
   FILE *imagem_original = fopen("imgs/imd-testing.ppm", "rb");
   FILE *imagem_copia = fopen("imgs/imd-copia.ppm", "ab+");
   unsigned char ch;
@@ -36,7 +28,7 @@ int main(int argc, char const *argv[]) {
     free(vet);
   }
   fclose(imagem_original);
-  fclose(imagem_copia);*/
+  fclose(imagem_copia);
   return 0;
 }
 
