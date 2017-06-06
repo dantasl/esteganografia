@@ -53,6 +53,9 @@ void ler_imagem_ppm(FILE *imagem, Imagem *img){
     exit(1);
   }
 
+  //após ter removido os comentários e pego os dados do componente rgb, o programa precisa quebrar a linha para finalmente chegar nos pixels
+  while (fgetc(imagem) != '\n');
+
   //iniciando a alocação dinâmica para os pixels. lembrando que um pixel são 3 bytes.
   img->valores = malloc(img->largura * img->altura * sizeof(Pixel));
   if (!img->valores){
@@ -62,9 +65,20 @@ void ler_imagem_ppm(FILE *imagem, Imagem *img){
 
   /*lendo os pixels do arquivo. primeiro parâmetro indica que a leitura será armazenada em img->valores, o struct criado para os pixels,
   */
-  fread(img->valores, 3 * img->largura, img->altura, imagem);
-  fclose(imagem);
 
+  //daqui pra baixo tá errado
+    fread(img->valores, 3 * img->largura, img->altura, imagem);
+    //fclose(imagem);
+    printf("tamanho altura %d\n", img->altura);
+
+    if (fread(img->valores, 3 * img->largura, img->altura, imagem) != img->altura)
+    {
+        perror( "fread for pixel data failed" );
+        // fprintf(stderr, "Error loading image '%s'\n", filename);
+         exit(1);
+    }
+  //daqui pra cima tá errado
+  printf("Endereço de memória: %p\n", &img);
   copiar_imagem_codificada(img);
 }
 
