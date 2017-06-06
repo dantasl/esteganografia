@@ -3,3 +3,6 @@ https://pt.stackoverflow.com/questions/136858/girar-imagem-ppm-em-90-graus-em-c
 https://stackoverflow.com/questions/15651567/steganography-in-c
 https://stackoverflow.com/questions/2693631/read-ppm-file-and-store-it-in-an-array-coded-with-c
 https://stackoverflow.com/questions/16226878/read-ppm-image-issues
+
+
+http://www.inf.pucrs.br/~pinho/PRGBAIXONIVEL/Trabalhos/T1-2016-2/T1-2016-2.html
