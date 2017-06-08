@@ -14,16 +14,18 @@ int tamanho_arquivo(FILE *arquivo){
   return tamanho; //retorna um inteiro contendo o tamanho, em bytes, do arquivo
 }
 
-static int* converter_mensagem_binario(FILE *mensagem, int *binarios){
-  int temporario;
-  int i = 0;
-  char buff[20];
-  while ( (temporario = fgetc(mensagem)) != EOF ) {
-    itoa(temporario, buff, 2);
-    printf("%s \n", buff);    
+int* get_binario_char(int temporario){
+  int i = 0, a = 7;
+  int* bin = (int *)calloc(8, sizeof(int)); //calloc é usado porque ele inicia preenchendo todas as posições com zero
+  int* bin_inverso = (int *)calloc(8, sizeof(int));
+  while(temporario > 0){
+    bin[i] = temporario%2;
+    bin_inverso[a] = bin[i];
+    temporario = temporario/2;
+    i++;
+    a--;
   }
-  printf("\n");
-  exit(1);
+  return bin_inverso;
 }
 
 void copiar_imagem_codificada(Imagem *img_ppm){
@@ -34,6 +36,38 @@ void copiar_imagem_codificada(Imagem *img_ppm){
   fprintf(copia_ppm, "255\n"); //escrevendo a densidade rgb, que deve ser 255
   fwrite(img_ppm->valores, 3 * img_ppm->largura, img_ppm->altura, copia_ppm);
   fclose(copia_ppm);
+}
+
+void codificar_mensagem(FILE *mensagem, Imagem *img){
+  //iniciando as operações com a mensagem de input do usuário. primeiro precisamos pegar o tamanho dela
+  int tamanho_mensagem = tamanho_arquivo(mensagem);
+  printf("O arquivo de input contendo a mensagem tem %d bytes.\n", tamanho_mensagem);
+  printf("A imagem fornecida tem %d bytes.\n", (img->largura * img->altura * 3));
+
+  //verificando se o input fornecido pelo usuário cabe na imagem selecionada
+  if( tamanho_mensagem < (img->largura * img->altura * 3) ){
+    printf("E possivel armazenar a mensagem na imagem. Prosseguindo...\n");
+
+    //iniciando a codificaçao
+    int codificados = 0, para_codificar = (tamanho_mensagem - 1), temporario;
+    while(codificados < para_codificar){
+      if ( (temporario = fgetc(mensagem)) != EOF ){
+        int* mensagem_binaria = (int *)calloc(8, sizeof(int));
+        mensagem_binaria = get_binario_char(temporario);
+        int i = 0;
+        for(i = 0; i < 8; i++){
+          printf("%d", mensagem_binaria[i]);
+        }
+        printf("\n");
+        codificados++;
+      }
+    }
+  } else {
+    printf("ERRO -> A mensagem e maior que a imagem.\n");
+    exit(1);
+  }
+
+  copiar_imagem_codificada(img);
 }
 
 void ler_imagem_ppm(FILE *imagem, FILE *mensagem, Imagem *img){
@@ -87,29 +121,7 @@ void ler_imagem_ppm(FILE *imagem, FILE *mensagem, Imagem *img){
     fread(img->valores, 3 * img->largura, img->altura, imagem);
   //daqui pra cima tá errado
 
-  //iniciando as operações com a mensagem de input do usuário. primeiro precisamos pegar o tamanho dela
-  int tamanho_mensagem = tamanho_arquivo(mensagem);
-  printf("O arquivo de input contendo a mensagem tem %d bytes.\n", tamanho_mensagem);
-  printf("A imagem fornecida tem %d bytes.\n", (img->largura * img->altura * 3));
-
-  //verificando se o input fornecido pelo usuário cabe na imagem selecionada
-  if( tamanho_mensagem < (img->largura * img->altura * 3) ){
-    printf("E possivel armazenar a mensagem na imagem. Prosseguindo...\n");
-    /*criando um vetor malloc para armazenar o valor em binário da mensagem do usuario
-    o tamanho da mensagem vem em bytes, para saber quantos bits isso é, basta multiplicar por 8
-    */
-    int *binarios = malloc(sizeof(tamanho_mensagem));
-    if(!binarios){
-      printf("ERRO -> Nao foi possivel alocar memoria no vetor malloc Binarios.\n");
-      exit(1);
-    }
-    binarios = converter_mensagem_binario(mensagem, binarios);
-  } else {
-    printf("ERRO -> A mensagem e maior que a imagem.\n");
-    exit(1);
-  }
-
-  copiar_imagem_codificada(img);
+  codificar_mensagem(mensagem, img);
 }
 
 int Encode_PPM(char *argv_input,char *argv_imagem){

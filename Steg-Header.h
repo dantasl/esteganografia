@@ -18,5 +18,8 @@ void ler_imagem_ppm( FILE *imagem, FILE *mensagem, Imagem *img );
 //reescreve uma imagem a partir dos dados armazenados em um struct
 void copiar_imagem_codificada( Imagem *img_ppm );
 
+//recebe os parametros necessários para codificar a mensagem na imagem
+void codificar_mensagem(FILE *mensagem, Imagem *img);
+
 //
-static int* converter_mensagem_binario(FILE *mensagem, int *binarios);
+int* get_binario_char(int temporario);
