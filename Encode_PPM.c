@@ -15,7 +15,15 @@ int tamanho_arquivo(FILE *arquivo){
 }
 
 static int* converter_mensagem_binario(FILE *mensagem, int *binarios){
-  return binarios;
+  int temporario;
+  int i = 0;
+  char buff[20];
+  while ( (temporario = fgetc(mensagem)) != EOF ) {
+    itoa(temporario, buff, 2);
+    printf("%s \n", buff);    
+  }
+  printf("\n");
+  exit(1);
 }
 
 void copiar_imagem_codificada(Imagem *img_ppm){
@@ -90,8 +98,7 @@ void ler_imagem_ppm(FILE *imagem, FILE *mensagem, Imagem *img){
     /*criando um vetor malloc para armazenar o valor em binário da mensagem do usuario
     o tamanho da mensagem vem em bytes, para saber quantos bits isso é, basta multiplicar por 8
     */
-    int tamanho_binarios = tamanho_mensagem * 8;
-    int *binarios = malloc(sizeof(tamanho_binarios));
+    int *binarios = malloc(sizeof(tamanho_mensagem));
     if(!binarios){
       printf("ERRO -> Nao foi possivel alocar memoria no vetor malloc Binarios.\n");
       exit(1);
