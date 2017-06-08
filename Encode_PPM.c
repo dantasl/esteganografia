@@ -7,6 +7,17 @@ typedef struct Imagens {
   Pixel *valores;
 } Imagem;
 
+int tamanho_arquivo(FILE *arquivo){
+  fseek(arquivo, 01, SEEK_END); //move o ponteiro do início do arquivo até o final
+  int tamanho = ftell(arquivo); //descobre o tamanho da distância percorrida
+  rewind(arquivo); //rebobina o ponteiro pro início do arquivo
+  return tamanho; //retorna um inteiro contendo o tamanho, em bytes, do arquivo
+}
+
+static int* converter_mensagem_binario(FILE *mensagem, int *binarios){
+  return binarios;
+}
+
 void copiar_imagem_codificada(Imagem *img_ppm){
   FILE *copia_ppm;
   copia_ppm = fopen("copias/teste-copia.ppm", "ab+");
@@ -17,7 +28,7 @@ void copiar_imagem_codificada(Imagem *img_ppm){
   fclose(copia_ppm);
 }
 
-void ler_imagem_ppm(FILE *imagem, Imagem *img){
+void ler_imagem_ppm(FILE *imagem, FILE *mensagem, Imagem *img){
   //checando se a imagem possui em seu cabeçalho o formato p6.
   char header[16];
   fgets(header, sizeof(header), imagem);
@@ -63,33 +74,46 @@ void ler_imagem_ppm(FILE *imagem, Imagem *img){
     exit(1);
   }
 
-  /*lendo os pixels do arquivo. primeiro parâmetro indica que a leitura será armazenada em img->valores, o struct criado para os pixels,
-  */
-
+  /*lendo os pixels do arquivo. primeiro parâmetro indica que a leitura será armazenada em img->valores, o struct criado para os pixels, */
   //daqui pra baixo tá errado
     fread(img->valores, 3 * img->largura, img->altura, imagem);
-    //fclose(imagem);
-    printf("tamanho altura %d\n", img->altura);
-
-    if (fread(img->valores, 3 * img->largura, img->altura, imagem) != img->altura)
-    {
-        perror( "fread for pixel data failed" );
-        // fprintf(stderr, "Error loading image '%s'\n", filename);
-         exit(1);
-    }
   //daqui pra cima tá errado
-  printf("Endereço de memória: %p\n", &img);
+
+  //iniciando as operações com a mensagem de input do usuário. primeiro precisamos pegar o tamanho dela
+  int tamanho_mensagem = tamanho_arquivo(mensagem);
+  printf("O arquivo de input contendo a mensagem tem %d bytes.\n", tamanho_mensagem);
+  printf("A imagem fornecida tem %d bytes.\n", (img->largura * img->altura * 3));
+
+  //verificando se o input fornecido pelo usuário cabe na imagem selecionada
+  if( tamanho_mensagem < (img->largura * img->altura * 3) ){
+    printf("E possivel armazenar a mensagem na imagem. Prosseguindo...\n");
+    /*criando um vetor malloc para armazenar o valor em binário da mensagem do usuario
+    o tamanho da mensagem vem em bytes, para saber quantos bits isso é, basta multiplicar por 8
+    */
+    int tamanho_binarios = tamanho_mensagem * 8;
+    int *binarios = malloc(sizeof(tamanho_binarios));
+    if(!binarios){
+      printf("ERRO -> Nao foi possivel alocar memoria no vetor malloc Binarios.\n");
+      exit(1);
+    }
+    binarios = converter_mensagem_binario(mensagem, binarios);
+  } else {
+    printf("ERRO -> A mensagem e maior que a imagem.\n");
+    exit(1);
+  }
+
   copiar_imagem_codificada(img);
 }
 
 int Encode_PPM(char *argv_input,char *argv_imagem){
-  FILE *imagem_original;
+  FILE *imagem_original, *mensagem_input;
 	imagem_original = fopen(argv_imagem, "rb");
+  mensagem_input = fopen(argv_input, "rb");
   Imagem *img;
-	if( imagem_original == NULL ){
-		printf("Erro na abertura do arquivo: %s!\n", argv_imagem);
+	if( imagem_original == NULL || mensagem_input == NULL ){
+		printf("Erro na abertura dos arquivos. Verifique o nome, se eles existem ou se tem algum conteúdo salvo. Depois disso, tente novamente.\n");
 	} else {
-		ler_imagem_ppm(imagem_original, img);
+		ler_imagem_ppm(imagem_original, mensagem_input, img);
 	}
 	fclose(imagem_original);
 	return 0;
