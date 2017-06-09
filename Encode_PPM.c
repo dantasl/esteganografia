@@ -16,7 +16,7 @@ int tamanho_arquivo(FILE *arquivo){
 
 int* get_binario_char(int temporario){
   int i = 0, a = 7;
-  int* bin = (int *)calloc(8, sizeof(int)); //calloc é usado porque ele inicia preenchendo todas as posições com zero
+  int* bin = (int *)calloc(8, sizeof(int)); //calloc é usado porque ele inicia preenchendo todas as posições com zero, malloc preenche com lixo
   int* bin_inverso = (int *)calloc(8, sizeof(int));
   while(temporario > 0){
     bin[i] = temporario%2;
@@ -54,11 +54,11 @@ void codificar_mensagem(FILE *mensagem, Imagem *img){
       if ( (temporario = fgetc(mensagem)) != EOF ){
         int* mensagem_binaria = (int *)calloc(8, sizeof(int));
         mensagem_binaria = get_binario_char(temporario);
-        int i = 0;
-        for(i = 0; i < 8; i++){
-          printf("%d", mensagem_binaria[i]);
-        }
-        printf("\n");
+        img->valores[codificados].r = 255; //alterando o valor do struct
+        img->valores[codificados].g = 122;
+        img->valores[codificados].b = 198;
+        //int temp = img->valores[0].r; como ler os valores do struct
+        //printf("%c\n", temp);
         codificados++;
       }
     }
@@ -66,7 +66,6 @@ void codificar_mensagem(FILE *mensagem, Imagem *img){
     printf("ERRO -> A mensagem e maior que a imagem.\n");
     exit(1);
   }
-
   copiar_imagem_codificada(img);
 }
 
