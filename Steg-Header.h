@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 //arquivos do projeto
 #include "Encode_PPM.c"
@@ -19,7 +20,10 @@ void ler_imagem_ppm( FILE *imagem, FILE *mensagem, Imagem *img );
 void copiar_imagem_codificada( Imagem *img_ppm );
 
 //recebe os parametros necessários para codificar a mensagem na imagem
-void codificar_mensagem(FILE *mensagem, Imagem *img);
+void codificar_mensagem( FILE *mensagem, Imagem *img );
 
-//
-int* get_binario_char(int temporario);
+//recebe um valor (decimal) e converte para binário
+int* get_binario_char( int temporario );
+
+//recebe um valor (binário) e converte para decimal
+int get_decimal_binario( int* mensagem_binaria );

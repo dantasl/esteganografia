@@ -7,6 +7,12 @@ typedef struct Imagens {
   Pixel *valores;
 } Imagem;
 
+typedef enum codificar {
+  R = 0,
+  G = 1,
+  B = 2,
+} Codificar;
+
 int tamanho_arquivo(FILE *arquivo){
   fseek(arquivo, 01, SEEK_END); //move o ponteiro do início do arquivo até o final
   int tamanho = ftell(arquivo); //descobre o tamanho da distância percorrida
@@ -17,15 +23,19 @@ int tamanho_arquivo(FILE *arquivo){
 int* get_binario_char(int temporario){
   int i = 0, a = 7;
   int* bin = (int *)calloc(8, sizeof(int)); //calloc é usado porque ele inicia preenchendo todas as posições com zero, malloc preenche com lixo
-  int* bin_inverso = (int *)calloc(8, sizeof(int));
   while(temporario > 0){
     bin[i] = temporario%2;
-    bin_inverso[a] = bin[i];
     temporario = temporario/2;
     i++;
-    a--;
   }
-  return bin_inverso;
+  return bin;
+}
+
+int get_decimal_binario(int* mensagem_binaria){
+  int decimal = 0, i;
+  for (i = 0; i < 8; i++)
+    decimal += mensagem_binaria[i] * pow(2, i);
+  return decimal;
 }
 
 void copiar_imagem_codificada(Imagem *img_ppm){
@@ -50,15 +60,49 @@ void codificar_mensagem(FILE *mensagem, Imagem *img){
 
     //iniciando a codificaçao
     int codificados = 0, para_codificar = (tamanho_mensagem - 1), temporario;
+    int contador_r = 0, contador_g = 0, contador_b = 0, i; //explicar depois
+    Codificar codifique_proximo = 0;
     while(codificados < para_codificar){
       if ( (temporario = fgetc(mensagem)) != EOF ){
         int* mensagem_binaria = (int *)calloc(8, sizeof(int));
+        int* pixel_binario = (int *)calloc(8, sizeof(int));
         mensagem_binaria = get_binario_char(temporario);
-        img->valores[codificados].r = 255; //alterando o valor do struct
-        img->valores[codificados].g = 122;
-        img->valores[codificados].b = 198;
-        //int temp = img->valores[0].r; como ler os valores do struct
-        //printf("%c\n", temp);
+        for(i = 0; i < 8; i++){
+          if(codifique_proximo == R){
+            //pegando valor binario do pixel
+            pixel_binario = get_binario_char(img->valores[contador_r].r);
+            if( !(pixel_binario[0] == mensagem_binaria[0]) ){
+              pixel_binario[0] = mensagem_binaria[0];
+            }
+            //atribuindo o novo valor a imagem
+            img->valores[contador_r].r = get_decimal_binario(pixel_binario);
+            //aumentando os contadores
+            contador_r++;
+            codifique_proximo = G;
+          } else if(codifique_proximo == G){
+            //pegando valor binario do pixel
+            pixel_binario = get_binario_char(img->valores[contador_g].g);
+            if( !(pixel_binario[0] == mensagem_binaria[0]) ){
+              pixel_binario[0] = mensagem_binaria[0];
+            }
+            //atribuindo o novo valor a imagem
+            img->valores[contador_g].g = get_decimal_binario(pixel_binario);
+            //aumentando os contadores
+            contador_g++;
+            codifique_proximo = B;
+          } else if(codifique_proximo == B){
+            //pegando valor binario do pixel
+            pixel_binario = get_binario_char(img->valores[contador_b].b);
+            if( !(pixel_binario[0] == mensagem_binaria[0]) ){
+              pixel_binario[0] = mensagem_binaria[0];
+            }
+            //atribuindo o novo valor a imagem
+            img->valores[contador_b].b = get_decimal_binario(pixel_binario);
+            //aumentando os contadores
+            contador_b++;
+            codifique_proximo = R;
+          }
+        }
         codificados++;
       }
     }
