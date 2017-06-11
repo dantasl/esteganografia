@@ -15,7 +15,7 @@ Demais formatos serão recusados pelo algoritmo.
 
 ## Parâmetros para execução
 
-**Encodificando uma mensagem:**
+### Encodificando uma mensagem
 
 Para encodificar uma mensagem, certifique-se de ter fornecido os parâmetros na seguinte ordem:
 
@@ -28,12 +28,12 @@ Para encodificar uma mensagem, certifique-se de ter fornecido os parâmetros na 
 * **[formato]** deve ser apenas ppm ou bmp;
 * **[imagem]** é a imagem que irá armazenar a mensagem criptografada.
 
-Exemplo:
+**Exemplo:**
 
 *./steg -e -i mensagem.txt -f ppm imagem.ppm*  
 *./steg -e -i segrego.txt -f bmp imagem.bmp*
 
-**Decodificando uma mensagem:**
+### Decodificando uma mensagem
 
 Para decodificar uma mensagem, certifique-se de ter fornecido os parâmetros na seguinte ordem:
 
@@ -49,9 +49,9 @@ Ou:
 * **-f** avisa que o próximo parâmetro será o formato da imagem;
 * **[formato]** deve ser apenas ppm ou bmp;
 * **[imagem]** é a imagem que que contém a mensagem e de onde será realizada decodificação;
-* **-s** indica que a mensagem decodificada deve ser exibida na tela, não salva em um arquivo (essa opção invalda **-o [output]**.
+* **-s** indica que a mensagem decodificada deve ser exibida na tela, não salva em um arquivo (essa opção invalda **-o [output]**).
 
-Exemplo:
+**Exemplo:**
 
 *./steg -d -o mensagem.txt -f ppm imagem.ppm*  
 *./steg -d -s -f bmp imagem.bmp*
