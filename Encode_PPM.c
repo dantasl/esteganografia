@@ -101,7 +101,6 @@ void codificar_mensagem(FILE *mensagem, Imagem *img){
   fclose(mensagem);
   copiar_imagem_codificada(img);
 }
-
 int Encode_PPM(char *argv_input,char *argv_imagem){
   FILE *imagem_original, *mensagem_input;
 	imagem_original = fopen(argv_imagem, "rb");

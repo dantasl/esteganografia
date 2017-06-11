@@ -4,6 +4,9 @@ int main(int argc, char *argv[]) {
   char *argv_imagem, *argv_input, *argv_output;
   //verificando se os argumentos passados pelo usuário são válidos
   if ( (argc == 7)||(argc == 6) ){
+    if( !(strcmp(argv[5], "ppm") == 0 || strcmp(argv[5], "bmp") == 0 || ( argc == 6 && strcmp(argv[4], "ppm" ) == 0) ) ){
+      printf("\nFormato de imagem digitado não suportado.\nEsperado: bmp ou ppm\nDuvidas? Consulte o README.\n\n");
+    }
     if ( strcmp(argv[1], "-e") == 0 && strcmp(argv[5], "ppm") == 0 ){
       argv_imagem = argv[6];
       argv_input = argv[3];
@@ -21,8 +24,6 @@ int main(int argc, char *argv[]) {
       Decode_PPM(argv_imagem, argv_output);
     } else if( strcmp(argv[1], "-d") == 0 && strcmp(argv[5], "bmp") == 0 ){
       //decode_bpm();
-    } else {
-      printf("\nFormato de imagem digitado não suportado.\nDigitado: %s\nEsperado: bmp ou ppm\nDuvidas? Consulte o README.\n\n", argv[5]);
     }
   } else {
     printf("\nERRO -> Parametro(s) informado(s) nao confere(m) com o(s) esperado(s).\n");

@@ -45,8 +45,6 @@ Imagem* ler_imagem_ppm(FILE *imagem, Imagem *img){
   }
 
   /*lendo os pixels do arquivo. primeiro parâmetro indica que a leitura será armazenada em img->valores, o struct criado para os pixels, */
-  //daqui pra baixo tá errado
-    fread(img->valores, 3 * img->largura, img->altura, imagem);
-  //daqui pra cima tá errado
+  fread(img->valores, 3 * img->largura, img->altura, imagem);
   return img;
 }
