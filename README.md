@@ -60,7 +60,7 @@ Ou:
 
 O programa irá considerar dois argumentos importantes para esse processo: a imagem e a mensagem fornecidas.
 
-A primeira verificação à ser feita é se a mensagem cabe dentro da imagem. Depois disso, para facilitar o trabalho, precisamos converter tanto os pixels da imagem quanto os caracteres da mensagem para binário. Com isso feito, basta sair comparando os bits menos diferenciais (ou **lsb**, sigla em inglês para less differential bit) dos pixels com os caracteres da mensagem.
+A primeira verificação à ser feita é se a mensagem cabe dentro da imagem. Depois disso, para facilitar o trabalho, precisamos converter tanto os pixels da imagem quanto os caracteres da mensagem para binário. Com isso feito, basta sair comparando os bits menos significativos (ou **lsb**, sigla em inglês para less differential bit) dos pixels com os caracteres da mensagem.
 
 Acompanhe o seguinte exemplo:
 
@@ -94,3 +94,13 @@ Porém, é necessário adicionar um caractere especial para indicar o fim da men
 Agora que você entendeu o processo de como é feito com o "R", pode abstrair para quantos caracteres forem necessários. 
 
 Em dúvidas, confira o código escrito em "Encode_PPM.c" ou "Encode_BPM.c" e leia os comentários.
+
+## Como é a realizada a decodificação de mensagens?
+
+É bem mais simples que encodificar as mensagens! Como somente os bits menos significativos foram alterados no passo anterior, só iremos trabalhar com eles.
+
+O algoritmo percorrerá as informações de cada pixel, coletando apenas os bits menos significativos e agrupando-os de oito em oito (um byte). Dependendo do parâmetro de decodificação digitado pelo usuário (-s para exibir no terminal -o [output] para salvar em um arquivo) o algoritmo tomará decisões diferentes sobre o encaminhamento dos dados.
+
+Mas até quando o programa ficará repetindo esse procedimento? Até encontrar o End of Text, que foi colocado no passo anterior.
+
+Em dúvidas, confira o código escrito em "Decode_PPM.c" ou "Decode_BPM.c" e leia os comentários.
