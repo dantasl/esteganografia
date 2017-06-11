@@ -89,4 +89,8 @@ Ou seja, os mesmos bits que compõem o caractere "R"! Depois disso, cada byte se
 
 É criado então uma cópia da imagem original, contendo agora nos bits menos diferenciais dos 3 primeiros pixels a mensagem criptografada, no nosso caso, o "R".
 
-Porém, é necessário adicionar um caractere especial para indicar o fim da mensagem, facilitando assim o trabalho na hora de decodificá-la. Para este fim, escolhi o End of Text da tabela ASCII, que tem como valor em decimal 3 e em binário 00000011. Com essa lógica, não estaremos armazenando apenas o "R", mas sim "R" + End of Text. Agora que você entendeu o processo de como é feito com o "R", pode abstrair para quantos caracteres forem necessários. Em dúvidas, confira o código escrito em "Encode_PPM.c" ou "Encode_BPM.c" e leia os comentários.
+Porém, é necessário adicionar um caractere especial para indicar o fim da mensagem, facilitando assim o trabalho na hora de decodificá-la. Para este fim, escolhi o End of Text da tabela ASCII, que tem como valor em decimal 3 e em binário 00000011. Com essa lógica, não estaremos armazenando apenas o "R", mas sim "R" + End of Text. 
+
+Agora que você entendeu o processo de como é feito com o "R", pode abstrair para quantos caracteres forem necessários. 
+
+Em dúvidas, confira o código escrito em "Encode_PPM.c" ou "Encode_BPM.c" e leia os comentários.
