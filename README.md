@@ -95,12 +95,12 @@ Agora que você entendeu o processo de como é feito com o "R", pode abstrair pa
 
 Em dúvidas, confira o código escrito em "Encode_PPM.c" ou "Encode_BPM.c" e leia os comentários.
 
-## Como é a realizada a decodificação de mensagens?
+## Como é realizada a decodificação de mensagens?
 
 É bem mais simples que encodificar as mensagens! Como somente os bits menos significativos foram alterados no passo anterior, só iremos trabalhar com eles.
 
 O algoritmo percorrerá as informações de cada pixel, coletando apenas os bits menos significativos e agrupando-os de oito em oito (um byte). Dependendo do parâmetro de decodificação digitado pelo usuário (-s para exibir no terminal -o [output] para salvar em um arquivo) o algoritmo tomará decisões diferentes sobre o encaminhamento dos dados.
 
-Mas até quando o programa ficará repetindo esse procedimento? Até encontrar o End of Text, que foi colocado no passo anterior.
+Mas até quando o programa ficará repetindo esse procedimento? Até encontrar o End of Text, introduzido na imagem na encodificação.
 
 Em dúvidas, confira o código escrito em "Decode_PPM.c" ou "Decode_BPM.c" e leia os comentários.
