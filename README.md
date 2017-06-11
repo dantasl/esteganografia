@@ -25,7 +25,7 @@ Para encodificar uma mensagem, certifique-se de ter fornecido os parâmetros na 
 * **-i** avisa que o próximo parâmetro será um arquivo contendo a mensagem à ser criptografada;
 * **[inputfile]** é a mensagem (dê preferência à formatos .txt);
 * **-f** avisa que o próximo parâmetro será o formato da imagem;
-* **[formato]** deve ser apenas ppm ou bmp,
+* **[formato]** deve ser apenas ppm ou bmp;
 * **[imagem]** é a imagem que irá armazenar a mensagem criptografada.
 
 Exemplo:
@@ -42,3 +42,16 @@ Para decodificar uma mensagem, certifique-se de ter fornecido os parâmetros na 
 Ou:
 
 *./steg -d -s -f [formato] [imagem]*
+
+* Onde **-d** diz ao programa que ele deve rodar em modo de decodificação;
+* **-o** avisa que o próximo parâmetro é o arquivo onde a mensagem decodificada será armazenada;
+* **[output]** é o arquivo que o programa irá criar para armazenar sua mensagem;
+* **-f** avisa que o próximo parâmetro será o formato da imagem;
+* **[formato]** deve ser apenas ppm ou bmp;
+* **[imagem]** é a imagem que que contém a mensagem e de onde será realizada decodificação;
+* **-s** indica que a mensagem decodificada deve ser exibida na tela, não salva em um arquivo (essa opção invalda **-o [output]**.
+
+Exemplo:
+
+*./steg -d -o mensagem.txt -f ppm imagem.ppm*  
+*./steg -d -s -f bmp imagem.bmp*
