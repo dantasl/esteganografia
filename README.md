@@ -64,4 +64,27 @@ A primeira verificação à ser feita é se a mensagem cabe dentro da imagem. De
 
 Acompanhe o seguinte exemplo:
 
-Digamos que nosso arquivo **mensagem.txt** contenha apenas um único caractere (para facilitar a exemplificação) e este caractere é o "R". Seu valor decimal na tabela ASCII é 82, que em binário fica 01010010. Para armazenar "R" em uma imagem, sem distorcê-la. 
+Digamos que nosso arquivo **mensagem.txt** contenha apenas um único caractere (para facilitar a exemplificação) e este caractere é o "R". Seu valor decimal na tabela ASCII é 82, que em binário fica 01010010. Para cada bit de "R", precisaremos de 1 byte da imagem para armazená-lo. Neste exemplo, precisamos de 8 bytes. Se 1 pixel contém 3 bytes, arredondando a conta precisaremos de uma imagem com no mínimo 3 pixels para armazenar "R".
+
+Os valores desses 3 pixels serão então convertidos para binário e as verificações serão nos bits menos diferenciais (os de ordem 2⁰). Para facilitar na exemplificação, transcreverei abaixo apenas os bit menos diferenciais desses 3 pixels:
+
+* 1 0 0 0 1 1 1 0 0
+
+Consideremos os valores em binário do "R" (de trás pra frente). Se o primeiro bit do "R" for igual ao bit menos diferencial do primeiro pixel, o valor é mantido, caso contrário é trocado para o valor de "R", e assim sucessivamente. No nosso exemplo, fica assim:
+
+* Primeiro bit de R = 0. Bit menos diferencial do primeiro byte = 1. São diferentes, troca.
+* Segundo bit de R = 1. Bit menos diferencial do segundo byte = 0. São diferentes, troca.
+* Terceiro bit de R = 0. Bit menos diferencial do terceiro byte = 0. São iguais, mantém.
+* Quarto bit de R = 0. Bit menos diferencial do quarto byte = 0. São iguais, mantém.
+* Quinto bit de R = 1. Bit menos diferencial do quinto byte = 1. São iguais, mantém.
+* Sexto bit de R = 0. Bit menos diferencial do sexto byte = 1. São diferentes, troca.
+* Sétimo bit de R = 1. Bit menos diferencial do sétimo byte = 1. São iguais, mantém.
+* Oitavo bit de R = 0. Bit menos diferencial do oitavo byte = 0. São iguais, mantém.
+
+Ao final da operação, os bits menos significativos desses 8 bytes será:
+
+* 0 1 0 0 1 0 1 0
+
+Ou seja, os mesmos bits que compõem o caractere "R"! Depois disso, cada byte será convertido de binário para decimal e armazenado de volta no struct que contém todos os pixels da imagem.
+
+É criado então uma cópia da imagem original, contendo agora nos bits menos diferenciais dos 3 primeiros pixels a mensagem criptografada, no nosso caso, o "R".
