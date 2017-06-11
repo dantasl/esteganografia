@@ -56,7 +56,7 @@ Ou:
 *./steg -d -o mensagem.txt -f ppm imagem.ppm*  
 *./steg -d -s -f bmp imagem.bmp*
 
-# Como é realizada a encodificação de mensagens?
+## Como é realizada a encodificação de mensagens?
 
 O programa irá considerar dois argumentos importantes para esse processo: a imagem e a mensagem fornecidas.
 
@@ -81,10 +81,12 @@ Consideremos os valores em binário do "R" (de trás pra frente). Se o primeiro 
 * Sétimo bit de R = 1. Bit menos diferencial do sétimo byte = 1. São iguais, mantém.
 * Oitavo bit de R = 0. Bit menos diferencial do oitavo byte = 0. São iguais, mantém.
 
-Ao final da operação, os bits menos significativos desses 8 bytes será:
+Ao final da operação, os bits menos significativos desses 8 bytes serão:
 
 * 0 1 0 0 1 0 1 0
 
 Ou seja, os mesmos bits que compõem o caractere "R"! Depois disso, cada byte será convertido de binário para decimal e armazenado de volta no struct que contém todos os pixels da imagem.
 
 É criado então uma cópia da imagem original, contendo agora nos bits menos diferenciais dos 3 primeiros pixels a mensagem criptografada, no nosso caso, o "R".
+
+Porém, é necessário adicionar um caractere especial para indicar o fim da mensagem, facilitando assim o trabalho na hora de decodificá-la. Para este fim, escolhi o End of Text da tabela ASCII, que tem como valor em decimal 3 e em binário 00000011. Com essa lógica, não estaremos armazenando apenas o "R", mas sim "R" + End of Text. Agora que você entendeu o processo de como é feito com o "R", pode abstrair para quantos caracteres forem necessários. Em dúvidas, confira o código escrito em "Encode_PPM.c" ou "Encode_BPM.c" e leia os comentários.
