@@ -55,3 +55,13 @@ Ou:
 
 *./steg -d -o mensagem.txt -f ppm imagem.ppm*  
 *./steg -d -s -f bmp imagem.bmp*
+
+# Como é realizada a encodificação de mensagens?
+
+O programa irá considerar dois argumentos importantes para esse processo: a imagem e a mensagem fornecidas.
+
+A primeira verificação à ser feita é se a mensagem cabe dentro da imagem. Depois disso, para facilitar o trabalho, precisamos converter tanto os pixels da imagem quanto os caracteres da mensagem para binário. Com isso feito, basta sair comparando os bits menos diferenciais (ou **lsb**, sigla em inglês para less differential bit) dos pixels com os caracteres da mensagem.
+
+Acompanhe o seguinte exemplo:
+
+Digamos que nosso arquivo **mensagem.txt** contenha apenas um único caractere (para facilitar a exemplificação) e este caractere é o "R". Seu valor decimal na tabela ASCII é 82, que em binário fica 01010010. Para armazenar "R" em uma imagem, sem distorcê-la. 
