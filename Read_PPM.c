@@ -16,11 +16,11 @@ Imagem* ler_imagem_ppm(FILE *imagem, Imagem *img){
   alguns arquivos ppm contém comentários, seja para especificar o criador ou atribuir direitos autorais.
   isso irá prejudicar quando formos codificar as mensagens na imagem, então é necessário retira-los
   cada # marca o inicio de uma linha de comentários. o programa deve percorrer toda essa linha até encontrar o \n.
-  */
+
   int comentarios = getc(imagem);
   while (comentarios == '#'){
      while( (comentarios = getc(imagem)) != '\n') ;
-  }
+  } */
 
   /*pegando tamanho da imagem pelo cabeçalho. segundo a documentação, a parte responsável por mostrar o tamanho será um número, espaço em branco
   seguido de outro número */

@@ -49,4 +49,4 @@ int get_decimal_binario( int* mensagem_binaria );
 void ler_imagem_decodificar_ppm( FILE *imagem, Imagem *img );
 
 //decodifica a mensagem, armazenando-a em um arquivo de texto ou exibindo na tela
-void decodificar_imagem( Imagem *img );
+void decodificar_imagem( Imagem *img, char *argv_output );

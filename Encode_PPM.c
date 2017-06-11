@@ -44,52 +44,55 @@ void codificar_mensagem(FILE *mensagem, Imagem *img){
     printf("E possivel armazenar a mensagem na imagem. Prosseguindo...\n");
 
     //iniciando a codificaçao
-    int codificados = 0, para_codificar = (tamanho_mensagem - 1), temporario;
+    int codificados = 0, para_codificar = tamanho_mensagem, temporario;
     int contador_r = 0, contador_g = 0, contador_b = 0, i; //explicar depois
     Codificar codifique_proximo = 0;
     while(codificados < para_codificar){
-      if ( (temporario = fgetc(mensagem)) != EOF ){
-        int* mensagem_binaria = (int *)calloc(8, sizeof(int));
-        int* pixel_binario = (int *)calloc(8, sizeof(int));
-        mensagem_binaria = get_binario_char(temporario);
-        for(i = 0; i < 8; i++){
-          if(codifique_proximo == R){
-            //pegando valor binario do pixel
-            pixel_binario = get_binario_char(img->valores[contador_r].r);
-            if( !(pixel_binario[0] == mensagem_binaria[0]) ){
-              pixel_binario[0] = mensagem_binaria[0];
-            }
-            //atribuindo o novo valor a imagem
-            img->valores[contador_r].r = get_decimal_binario(pixel_binario);
-            //aumentando os contadores
-            contador_r++;
-            codifique_proximo = G;
-          } else if(codifique_proximo == G){
-            //pegando valor binario do pixel
-            pixel_binario = get_binario_char(img->valores[contador_g].g);
-            if( !(pixel_binario[0] == mensagem_binaria[0]) ){
-              pixel_binario[0] = mensagem_binaria[0];
-            }
-            //atribuindo o novo valor a imagem
-            img->valores[contador_g].g = get_decimal_binario(pixel_binario);
-            //aumentando os contadores
-            contador_g++;
-            codifique_proximo = B;
-          } else if(codifique_proximo == B){
-            //pegando valor binario do pixel
-            pixel_binario = get_binario_char(img->valores[contador_b].b);
-            if( !(pixel_binario[0] == mensagem_binaria[0]) ){
-              pixel_binario[0] = mensagem_binaria[0];
-            }
-            //atribuindo o novo valor a imagem
-            img->valores[contador_b].b = get_decimal_binario(pixel_binario);
-            //aumentando os contadores
-            contador_b++;
-            codifique_proximo = R;
-          }
-        }
-        codificados++;
+      if( (temporario = fgetc(mensagem)) == EOF ){ //caso seja o fim do arquivo, atribui temporario com o valor 3, que na tabela ascii equivale à end of text.
+        temporario = 3;
       }
+      int* mensagem_binaria = (int *)calloc(8, sizeof(int));
+      mensagem_binaria = get_binario_char(temporario);
+      for(i = 0; i < 8; i++){
+        int* pixel_binario = (int *)calloc(8, sizeof(int));
+        if(codifique_proximo == R){
+          //pegando valor binario do pixel
+          pixel_binario = get_binario_char(img->valores[contador_r].r);
+          if( pixel_binario[0] != mensagem_binaria[i] ){
+            pixel_binario[0] = mensagem_binaria[i];
+          }
+          //atribuindo o novo valor a imagem
+          img->valores[contador_r].r = get_decimal_binario(pixel_binario);
+          //aumentando os contadores
+          contador_r++;
+          codifique_proximo = G;
+        } else if(codifique_proximo == G){
+          //pegando valor binario do pixel
+          pixel_binario = get_binario_char(img->valores[contador_g].g);
+          if( pixel_binario[0] != mensagem_binaria[i] ){
+            pixel_binario[0] = mensagem_binaria[i];
+          }
+          //atribuindo o novo valor a imagem
+          img->valores[contador_g].g = get_decimal_binario(pixel_binario);
+          //aumentando os contadores
+          contador_g++;
+          codifique_proximo = B;
+        } else if(codifique_proximo == B){
+          //pegando valor binario do pixel
+          pixel_binario = get_binario_char(img->valores[contador_b].b);
+          if( pixel_binario[0] != mensagem_binaria[i] ){
+            pixel_binario[0] = mensagem_binaria[i];
+          }
+          //atribuindo o novo valor a imagem
+          img->valores[contador_b].b = get_decimal_binario(pixel_binario);
+          //aumentando os contadores
+          contador_b++;
+          codifique_proximo = R;
+        }
+        free(pixel_binario);
+      }
+      free(mensagem_binaria);
+      codificados++;
     }
   } else {
     printf("ERRO -> A mensagem e maior que a imagem.\n");
