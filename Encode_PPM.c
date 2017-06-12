@@ -29,7 +29,7 @@ void copiar_imagem_codificada(Imagem *img_ppm){
   fprintf(copia_ppm, "P6\n"); //escrevendo o cabeçalho, que deve ser P6
   fprintf(copia_ppm, "%d %d\n",img_ppm->largura,img_ppm->altura); //escrevendo as dimensões, já lidas da imagem original
   fprintf(copia_ppm, "255\n"); //escrevendo a densidade rgb, que deve ser 255
-  fwrite(img_ppm->valores, 3 * img_ppm->largura, img_ppm->altura, copia_ppm);
+  fwrite(img_ppm->valores, 3 * img_ppm->largura, img_ppm->altura, copia_ppm); //escrevendo o valor dos pixels no novo arquivo de imagem
   fclose(copia_ppm);
 }
 
@@ -43,9 +43,16 @@ void codificar_mensagem(FILE *mensagem, Imagem *img){
   if( tamanho_mensagem < (img->largura * img->altura * 3) ){
     printf("E possivel armazenar a mensagem na imagem. Prosseguindo...\n");
 
-    //iniciando a codificaçao
+    /*
+    Explicando a codificação:
+    Vendo na sala de aula que um grupo de amigos encodificou a mensagem e ela ficou com tons acentuados de verde, percebi que
+    é necessário "espalhar" a mensagem de forma mais igualitária possível entre os rgb dos pixels. Para isso eu criei um enum
+    que auxilia o processo. Se eu codifiquei a mensagem em um R do pixel, devo fazer a próxima codificação em um G, e por aí vai.
+    Dessa forma o programa não sobrecarrega o valor dos rgb e nem os deforma. Os contadores criados servem para auxiliar o programa
+    a ter uma noção sobre qual pixel aquele r, g, ou b pertencem.
+    */
     int codificados = 0, para_codificar = tamanho_mensagem, temporario;
-    int contador_r = 0, contador_g = 0, contador_b = 0, i; //explicar depois
+    int contador_r = 0, contador_g = 0, contador_b = 0, i;
     Codificar codifique_proximo = 0;
     while(codificados < para_codificar){
       if( (temporario = fgetc(mensagem)) == EOF ){ //caso seja o fim do arquivo, atribui temporario com o valor 3, que na tabela ascii equivale à end of text.
@@ -58,8 +65,8 @@ void codificar_mensagem(FILE *mensagem, Imagem *img){
         if(codifique_proximo == R){
           //pegando valor binario do pixel
           pixel_binario = get_binario_char(img->valores[contador_r].r);
-          if( pixel_binario[0] != mensagem_binaria[i] ){
-            pixel_binario[0] = mensagem_binaria[i];
+          if( pixel_binario[0] != mensagem_binaria[i] ){ //verifica se o bit menos significativo do pixel é igual ao i-ésimo bit da mensagem
+            pixel_binario[0] = mensagem_binaria[i]; //se não for, troca o valor
           }
           //atribuindo o novo valor a imagem
           img->valores[contador_r].r = get_decimal_binario(pixel_binario);
@@ -69,8 +76,8 @@ void codificar_mensagem(FILE *mensagem, Imagem *img){
         } else if(codifique_proximo == G){
           //pegando valor binario do pixel
           pixel_binario = get_binario_char(img->valores[contador_g].g);
-          if( pixel_binario[0] != mensagem_binaria[i] ){
-            pixel_binario[0] = mensagem_binaria[i];
+          if( pixel_binario[0] != mensagem_binaria[i] ){ //verifica se o bit menos significativo do pixel é igual ao i-ésimo bit da mensagem
+            pixel_binario[0] = mensagem_binaria[i]; //se não for, troca o valor
           }
           //atribuindo o novo valor a imagem
           img->valores[contador_g].g = get_decimal_binario(pixel_binario);
@@ -80,8 +87,8 @@ void codificar_mensagem(FILE *mensagem, Imagem *img){
         } else if(codifique_proximo == B){
           //pegando valor binario do pixel
           pixel_binario = get_binario_char(img->valores[contador_b].b);
-          if( pixel_binario[0] != mensagem_binaria[i] ){
-            pixel_binario[0] = mensagem_binaria[i];
+          if( pixel_binario[0] != mensagem_binaria[i] ){ //verifica se o bit menos significativo do pixel é igual ao i-ésimo bit da mensagem
+            pixel_binario[0] = mensagem_binaria[i]; //se não for, troca o valor
           }
           //atribuindo o novo valor a imagem
           img->valores[contador_b].b = get_decimal_binario(pixel_binario);

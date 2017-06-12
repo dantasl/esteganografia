@@ -5,11 +5,13 @@ void decodificar_imagem(Imagem *img, char *argv_output){
   int i = 0, temporario_decimal = 0, cont_r = 0, cont_g = 0, cont_b = 0;
   Codificar decodifique_proximo = 0;
   if ( strcmp(argv_output, "-s") != 0) {
-    output =  fopen(argv_output, "w+");
+    output =  fopen(argv_output, "w+"); //caso o usuário tenha decidido por salvar a mensagem decodificada em um arquivo, é necessário criá-lo
   } else {
     printf("Holy moly, Marjory vai ficar orgulhosa! Descobrimos a mensagem secreta:\n");
   }
-  while(temporario_decimal != 3){
+  /* tendo em vista que na hora de codificar eu fiz com que cada r, g e b recebessem os dados da forma mais igualitária possível,
+    é necessário usar uma lógica similar à da codificação para ler os dados.*/
+  while(temporario_decimal != 3){ //por quê 3? 3 é o decimal para End of Text
     temporario_cores = (int *)calloc(8, sizeof(int));
     for(i = 0; i < 8; i++){
       mensagem_binaria = (int *)calloc(8, sizeof(int));
@@ -31,10 +33,13 @@ void decodificar_imagem(Imagem *img, char *argv_output){
       }
       free(mensagem_binaria);
     }
+    //caso o valor encontrado na leitura dos bits menos significativos for diferente do End of Text (em decimal é 3), toma as decisões de ouput
     if( (temporario_decimal = get_decimal_binario(temporario_cores)) != 3 ){
       if( strcmp(argv_output, "-s") == 0 ){
+        //caso o usuário tenha escolhido ver a mensagem decodificada no prompt, imprime ela
         printf("%c", temporario_decimal);
       } else{
+        //caso tenha escolhido salvá-la em um arquivo, escreve o valor encontrado
         fputc(temporario_decimal, output);
       }
     }
