@@ -44,8 +44,11 @@ void copiar_imagem_codificada( Imagem *img_ppm );
 //reescreve uma imagem em bmp a partir dos dados armazenados no struct
 void copiar_arquivo_codificado_bmp( Imagem *img_bmp );
 
-//recebe os parametros necessários para codificar a mensagem na imagem
+//recebe os parametros necessários para codificar a mensagem na imagem ppm
 void codificar_mensagem( FILE *mensagem, Imagem *img );
+
+//recebe os parametros necessários para codificar a mensagem na imagem bmp
+void codificar_mensagem_bmp( FILE *mensagem, Imagem *img );
 
 //recebe um valor (decimal) e converte para binário
 int* get_binario_char( int temporario );
@@ -58,3 +61,6 @@ void ler_imagem_decodificar_ppm( FILE *imagem, Imagem *img );
 
 //decodifica a mensagem, armazenando-a em um arquivo de texto ou exibindo na tela
 void decodificar_imagem( Imagem *img, char *argv_output );
+
+//decodifica a mensagem, armazenando-a em um arquivo de texto ou exibindo na tela
+void decodificar_imagem_bmp( Imagem *img, char *argv_output );
