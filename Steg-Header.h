@@ -21,8 +21,8 @@ typedef enum codificar {
 } Codificar;
 
 //arquivos do projeto
-//#include "Read_PPM.c"
-#include "Read_BMP.c"
+#include "Read_PPM.c"
+//#include "Read_BMP.c"
 #include "Encode_PPM.c"
 #include "Encode_BMP.c"
 #include "Decode_PPM.c"
