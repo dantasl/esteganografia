@@ -11,6 +11,7 @@ typedef struct Pixels {
 
 typedef struct Imagens {
   int largura, altura;
+  char header[54]; //útil para a leitura dos arquivos bmp
   Pixel *valores;
 } Imagem;
 
@@ -22,6 +23,7 @@ typedef enum codificar {
 
 //arquivos do projeto
 #include "Read_PPM.c"
+#include "Read_BMP.c"
 #include "Encode_PPM.c"
 #include "Encode_BMP.c"
 #include "Decode_PPM.c"
@@ -33,8 +35,14 @@ int tamanho_arquivo( FILE *arquivo );
 //atualmente lê, verifica o cabeçalho, se existem comentários, a densidade do rgb e armazena os dados certos em structs
 Imagem* ler_imagem_ppm( FILE *imagem, Imagem *img );
 
-//reescreve uma imagem a partir dos dados armazenados em um struct
+//lê a imagem, armazena o cabeçalho de 54 bytes e seus pixels, retornando todas essas informações em um struct
+Imagem* ler_imagem_bmp( FILE *imagem, Imagem *img );
+
+//reescreve uma imagem em ppm partir dos dados armazenados em um struct
 void copiar_imagem_codificada( Imagem *img_ppm );
+
+//reescreve uma imagem em bmp a partir dos dados armazenados no struct
+void copiar_arquivo_codificado_bmp( Imagem *img_bmp );
 
 //recebe os parametros necessários para codificar a mensagem na imagem
 void codificar_mensagem( FILE *mensagem, Imagem *img );
