@@ -9,6 +9,10 @@ void copiar_arquivo_codificado_bmp(Imagem *img_bmp){
   fclose(copia_bmp);
 }
 
+void codificar_mensagem_bmp(FILE *mensagem, Imagem *img){
+  copiar_arquivo_codificado_bmp(img);
+}
+
 int Encode_BMP(char *argv_input,char *argv_imagem){
   FILE *imagem_original, *mensagem_input;
 	imagem_original = fopen(argv_imagem, "rb");
@@ -18,8 +22,7 @@ int Encode_BMP(char *argv_input,char *argv_imagem){
 		printf("Erro na abertura dos arquivos. Verifique o nome, se eles existem ou se tem algum conteúdo salvo. Depois disso, tente novamente.\n");
 	} else {
 		img = ler_imagem_bmp(imagem_original, img);
-    copiar_arquivo_codificado_bmp(img);
-    //codificar_mensagem(mensagem_input, img);
+    codificar_mensagem_bmp(mensagem_input, img);
 	}
 	fclose(imagem_original);
 	return 0;
