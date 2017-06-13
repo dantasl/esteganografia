@@ -61,3 +61,6 @@ void ler_imagem_decodificar_ppm( FILE *imagem, Imagem *img );
 
 //decodifica a mensagem, armazenando-a em um arquivo de texto ou exibindo na tela
 void decodificar_imagem( Imagem *img, char *argv_output );
+
+//decodifica a mensagem, armazenando-a em um arquivo de texto ou exibindo na tela
+void decodificar_imagem_bmp( Imagem *img, char *argv_output );

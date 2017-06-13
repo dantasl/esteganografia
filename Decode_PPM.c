@@ -56,7 +56,7 @@ int Decode_PPM(char *argv_imagem,char *argv_output){
 	imagem_original = fopen(argv_imagem, "rb");
   Imagem *img;
 	if( imagem_original == NULL ){
-		printf("Erro na abertura da imagem original. Verifique o nome, se ela existe ou se tem algum conteúdo salvo. Depois disso, tente novamente.\n");
+		printf("Erro na abertura da imagem PPM original. Verifique o nome, se ela existe ou se tem algum conteúdo salvo. Depois disso, tente novamente.\n");
 	} else {
 		img = ler_imagem_ppm(imagem_original, img);
     decodificar_imagem(img, argv_output);
