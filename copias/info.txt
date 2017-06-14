@@ -1,0 +1,1 @@
+Apenas para sentido de organização, quando o programa for gerar uma nova imagem, ele a armazenará nessa pasta.
