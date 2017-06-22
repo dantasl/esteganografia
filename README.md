@@ -64,9 +64,9 @@ A primeira verificação à ser feita é se a mensagem cabe dentro da imagem. De
 
 Acompanhe o seguinte exemplo:
 
-Digamos que nosso arquivo **mensagem.txt** contenha apenas um único caractere (para facilitar a exemplificação) e este caractere é o "R". Seu valor decimal na tabela ASCII é 82, que em binário fica 01010010. Para cada bit de "R", precisaremos de 1 byte da imagem para armazená-lo. Neste exemplo, precisamos de 8 bytes. Se 1 pixel contém 3 bytes, arredondando a conta precisaremos de uma imagem com no mínimo 3 pixels para armazenar "R".
+Digamos que nosso arquivo **mensagem.txt** contenha apenas um único caractere (para facilitar a exemplificação) e este caractere é o "R". Seu valor decimal na tabela ASCII é 82, que em binário fica 01010010. Para cada bit de "R", precisaremos de 1 byte da imagem para armazená-lo. Neste exemplo, precisamos de 8 bytes. Cada pixel possui três cores, e cada cor possui um byte. Sendo assim, arredondando a conta precisaremos de uma imagem com no mínimo 3 pixels para armazenar "R".
 
-Os valores desses 3 pixels serão então convertidos para binário e as verificações serão nos bits menos diferenciais (os de ordem 2⁰). Para facilitar na exemplificação, transcreverei abaixo apenas os bit menos diferenciais desses 3 pixels:
+Os valores desses 3 pixels serão então convertidos para binário e as verificações serão nos bits menos diferenciais (os de ordem 2⁰). Para facilitar na exemplificação, transcreverei abaixo apenas os bit menos diferenciais desses 3 pixels hipotéticos:
 
 * 1 0 0 0 1 1 1 0 0
 
@@ -93,7 +93,7 @@ Porém, é necessário adicionar um caractere especial para indicar o fim da men
 
 Agora que você entendeu o processo de como é feito com o "R", pode abstrair para quantos caracteres forem necessários. 
 
-Em dúvidas, confira o código escrito em "Encode_PPM.c" ou "Encode_BPM.c" e leia os comentários.
+Para ver isso na prática, confira o código escrito em "Encode_PPM.c" ou "Encode_BPM.c" e leia os comentários.
 
 ## Como é realizada a decodificação de mensagens?
 
@@ -103,4 +103,4 @@ O algoritmo percorrerá as informações de cada pixel, coletando apenas os bits
 
 Mas até quando o programa ficará repetindo esse procedimento? Até encontrar o End of Text, introduzido na imagem na encodificação.
 
-Em dúvidas, confira o código escrito em "Decode_PPM.c" ou "Decode_BPM.c" e leia os comentários.
+Para ver isso na prática, confira o código em "Decode_PPM.c" ou "Decode_BPM.c" e leia os comentários.
