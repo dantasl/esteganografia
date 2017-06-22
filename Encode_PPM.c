@@ -1,31 +1,6 @@
-int tamanho_arquivo(FILE *arquivo){
-  fseek(arquivo, 01, SEEK_END); //move o ponteiro do início do arquivo até o final
-  int tamanho = ftell(arquivo); //descobre o tamanho da distância percorrida
-  rewind(arquivo); //rebobina o ponteiro pro início do arquivo
-  return tamanho; //retorna um inteiro contendo o tamanho, em bytes, do arquivo
-}
-
-int* get_binario_char(int temporario){
-  int i = 0, a = 7;
-  int* bin = (int *)calloc(8, sizeof(int)); //calloc é usado porque ele inicia preenchendo todas as posições com zero, malloc preenche com lixo
-  while(temporario > 0){
-    bin[i] = temporario%2;
-    temporario = temporario/2;
-    i++;
-  }
-  return bin;
-}
-
-int get_decimal_binario(int* mensagem_binaria){
-  int decimal = 0, i;
-  for (i = 0; i < 8; i++)
-    decimal += mensagem_binaria[i] * pow(2, i);
-  return decimal;
-}
-
-void copiar_imagem_codificada(Imagem *img_ppm){
+void copiar_imagem_codificada_ppm(Imagem *img_ppm){
   FILE *copia_ppm;
-  copia_ppm = fopen("copias/teste-copia.ppm", "ab+");
+  copia_ppm = fopen("copias/copia.ppm", "ab+");
   fprintf(copia_ppm, "P6\n"); //escrevendo o cabeçalho, que deve ser P6
   fprintf(copia_ppm, "%d %d\n",img_ppm->largura,img_ppm->altura); //escrevendo as dimensões, já lidas da imagem original
   fprintf(copia_ppm, "255\n"); //escrevendo a densidade rgb, que deve ser 255
@@ -33,7 +8,7 @@ void copiar_imagem_codificada(Imagem *img_ppm){
   fclose(copia_ppm);
 }
 
-void codificar_mensagem(FILE *mensagem, Imagem *img){
+void codificar_mensagem_ppm(FILE *mensagem, Imagem *img){
   //iniciando as operações com a mensagem de input do usuário. primeiro precisamos pegar o tamanho dela
   int tamanho_mensagem = tamanho_arquivo(mensagem);
   printf("O arquivo de input contendo a mensagem tem %d bytes.\n", tamanho_mensagem);
@@ -56,6 +31,7 @@ void codificar_mensagem(FILE *mensagem, Imagem *img){
     Codificar codifique_proximo = 0;
     while(codificados < para_codificar){
       if( (temporario = fgetc(mensagem)) == EOF ){ //caso seja o fim do arquivo, atribui temporario com o valor 3, que na tabela ascii equivale à end of text.
+        printf("Codificacao realizada com sucesso! Verifique o arquivo de saida armazenado no diretorio /copias.\n");
         temporario = 3;
       }
       int* mensagem_binaria = (int *)calloc(8, sizeof(int));
@@ -105,8 +81,7 @@ void codificar_mensagem(FILE *mensagem, Imagem *img){
     printf("ERRO -> A mensagem e maior que a imagem.\n");
     exit(1);
   }
-  fclose(mensagem);
-  copiar_imagem_codificada(img);
+  copiar_imagem_codificada_ppm(img);
 }
 int Encode_PPM(char *argv_input,char *argv_imagem){
   FILE *imagem_original, *mensagem_input;
@@ -117,8 +92,9 @@ int Encode_PPM(char *argv_input,char *argv_imagem){
 		printf("Erro na abertura dos arquivos. Verifique o nome, se eles existem ou se tem algum conteúdo salvo. Depois disso, tente novamente.\n");
 	} else {
 		img = ler_imagem_ppm(imagem_original, img);
-    codificar_mensagem(mensagem_input, img);
+    codificar_mensagem_ppm(mensagem_input, img);
 	}
 	fclose(imagem_original);
+  fclose(mensagem_input);
 	return 0;
 }

@@ -1,4 +1,4 @@
-void decodificar_imagem(Imagem *img, char *argv_output){
+void decodificar_imagem_ppm(Imagem *img, char *argv_output){
   FILE *output;
   int* mensagem_binaria;
   int* temporario_cores;
@@ -59,7 +59,7 @@ int Decode_PPM(char *argv_imagem,char *argv_output){
 		printf("Erro na abertura da imagem PPM original. Verifique o nome, se ela existe ou se tem algum conteúdo salvo. Depois disso, tente novamente.\n");
 	} else {
 		img = ler_imagem_ppm(imagem_original, img);
-    decodificar_imagem(img, argv_output);
+    decodificar_imagem_ppm(img, argv_output);
 	}
 	fclose(imagem_original);
   free(img);

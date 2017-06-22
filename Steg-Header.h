@@ -22,6 +22,7 @@ typedef enum codificar {
 } Codificar;
 
 //arquivos do projeto
+#include "Helpers.c"
 #include "Read_PPM.c"
 #include "Read_BMP.c"
 #include "Encode_PPM.c"
@@ -29,26 +30,10 @@ typedef enum codificar {
 #include "Decode_PPM.c"
 #include "Decode_BMP.c"
 
+/*SUB-ROTINAS CONTIDAS NO ARQUIVO HELPERS.C*/
+
 //utilizada para descobrir o tamanho (em bytes) de imagens ou arquivos .txt
 int tamanho_arquivo( FILE *arquivo );
-
-//atualmente lê, verifica o cabeçalho, se existem comentários, a densidade do rgb e armazena os dados certos em structs
-Imagem* ler_imagem_ppm( FILE *imagem, Imagem *img );
-
-//lê a imagem, armazena o cabeçalho de 54 bytes e seus pixels, retornando todas essas informações em um struct
-Imagem* ler_imagem_bmp( FILE *imagem, Imagem *img );
-
-//reescreve uma imagem em ppm partir dos dados armazenados em um struct
-void copiar_imagem_codificada( Imagem *img_ppm );
-
-//reescreve uma imagem em bmp a partir dos dados armazenados no struct
-void copiar_arquivo_codificado_bmp( Imagem *img_bmp );
-
-//recebe os parametros necessários para codificar a mensagem na imagem ppm
-void codificar_mensagem( FILE *mensagem, Imagem *img );
-
-//recebe os parametros necessários para codificar a mensagem na imagem bmp
-void codificar_mensagem_bmp( FILE *mensagem, Imagem *img );
 
 //recebe um valor (decimal) e converte para binário
 int* get_binario_char( int temporario );
@@ -56,11 +41,41 @@ int* get_binario_char( int temporario );
 //recebe um valor (binário) e converte para decimal
 int get_decimal_binario( int* mensagem_binaria );
 
-//ler a imagem a ser decodificada em ppm, com padrões diferente da função ler_imagem_ppm
+/*SUB-ROTINAS CONTIDAS NO ARQUIVO READ_PPM.C*/
+
+//atualmente lê, verifica o cabeçalho, a densidade do rgb e armazena os dados certos em structs
+Imagem* ler_imagem_ppm( FILE *imagem, Imagem *img );
+
+/*SUB-ROTINAS CONTIDAS NO ARQUIVO READ_BMP.C*/
+
+//lê a imagem, armazena o cabeçalho de 54 bytes e seus pixels, retornando todas essas informações em um struct
+Imagem* ler_imagem_bmp( FILE *imagem, Imagem *img );
+
+/*SUB-ROTINAS CONTIDAS NO ARQUIVO ENCODE_PPM.C*/
+
+//reescreve uma imagem em ppm partir dos dados armazenados em um struct
+void copiar_imagem_codificada_ppm( Imagem *img_ppm );
+
+//recebe os parametros necessários para codificar a mensagem na imagem ppm
+void codificar_mensagem_ppm( FILE *mensagem, Imagem *img );
+
+/*SUB-ROTINAS CONTIDAS NO ARQUIVO DECODE_PPM.C*/
+
+//ler a imagem a ser decodificada em ppm
 void ler_imagem_decodificar_ppm( FILE *imagem, Imagem *img );
 
 //decodifica a mensagem, armazenando-a em um arquivo de texto ou exibindo na tela
-void decodificar_imagem( Imagem *img, char *argv_output );
+void decodificar_imagem_ppm( Imagem *img, char *argv_output );
+
+/*SUB-ROTINAS CONTIDAS NO ARQUIVO ENCODE_BMP.C*/
+
+//recebe os parametros necessários para codificar a mensagem na imagem bmp
+void codificar_mensagem_bmp( FILE *mensagem, Imagem *img );
+
+/*SUB-ROTINAS CONTIDAS NO ARQUIVO DECODE_BMP.C*/
+
+//reescreve uma imagem em bmp a partir dos dados armazenados no struct
+void copiar_arquivo_codificado_bmp( Imagem *img_bmp );
 
 //decodifica a mensagem, armazenando-a em um arquivo de texto ou exibindo na tela
 void decodificar_imagem_bmp( Imagem *img, char *argv_output );

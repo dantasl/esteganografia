@@ -11,16 +11,7 @@ Imagem* ler_imagem_ppm(FILE *imagem, Imagem *img){
   if (!img) {
       printf("ERRO -> Nao foi possivel alocar a memoria no struct Imagem.\n");
       exit(1);
-  }
-  /*
-  alguns arquivos ppm contém comentários, seja para especificar o criador ou atribuir direitos autorais.
-  isso irá prejudicar quando formos codificar as mensagens na imagem, então é necessário retira-los
-  cada # marca o inicio de uma linha de comentários. o programa deve percorrer toda essa linha até encontrar o \n.
-
-  int comentarios = getc(imagem);
-  while (comentarios == '#'){
-     while( (comentarios = getc(imagem)) != '\n') ;
-  } */
+  } 
 
   /*pegando tamanho da imagem pelo cabeçalho. segundo a documentação, a parte responsável por mostrar o tamanho será um número, espaço em branco
   seguido de outro número */
@@ -34,10 +25,10 @@ Imagem* ler_imagem_ppm(FILE *imagem, Imagem *img){
     exit(1);
   }
 
-  //após ter removido os comentários e pego os dados do componente rgb, o programa precisa quebrar a linha para finalmente chegar nos pixels
+  //após ter pego os dados do componente rgb, o programa precisa quebrar a linha para finalmente chegar nos pixels
   while (fgetc(imagem) != '\n');
 
-  //iniciando a alocação dinâmica para os pixels. lembrando que um pixel são 3 bytes.
+  //iniciando a alocação dinâmica para os pixels. lembrando que um pixel possui três cores, cada cor com 1 byte.
   img->valores = malloc(img->largura * img->altura * sizeof(Pixel));
   if (!img->valores){
     printf("ERRO -> Nao foi possivel alocar a memoria para os pixels.\n");

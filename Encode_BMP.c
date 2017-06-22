@@ -1,7 +1,7 @@
 void copiar_arquivo_codificado_bmp(Imagem *img_bmp){
   int i = 0;
   FILE *copia_bmp;
-  copia_bmp = fopen("copias/teste-copia.bmp", "ab+");
+  copia_bmp = fopen("copias/copia.bmp", "ab+");
   for(i = 0; i < 54; i++){
     fputc(img_bmp->header[i], copia_bmp);
   }
@@ -21,6 +21,7 @@ void codificar_mensagem_bmp(FILE *mensagem, Imagem *img){
     while(codificados < para_codificar){
       if( (temporario = fgetc(mensagem)) == EOF ){ //caso seja o fim do arquivo, atribui temporario com o valor 3, que na tabela ascii equivale à end of text.
         temporario = 3;
+        printf("Codificacao realizada com sucesso! Verifique o arquivo de saida armazenado no diretorio /copias.\n");
       }
       int* mensagem_binaria = (int *)calloc(8, sizeof(int));
       mensagem_binaria = get_binario_char(temporario);
@@ -69,7 +70,6 @@ void codificar_mensagem_bmp(FILE *mensagem, Imagem *img){
     printf("ERRO -> A mensagem e maior que a imagem.\n");
     exit(1);
   }
-  fclose(mensagem);
   copiar_arquivo_codificado_bmp(img);
 }
 
@@ -85,5 +85,6 @@ int Encode_BMP(char *argv_input,char *argv_imagem){
     codificar_mensagem_bmp(mensagem_input, img);
 	}
 	fclose(imagem_original);
+  fclose(mensagem_input);
 	return 0;
 }
